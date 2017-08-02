@@ -1,0 +1,23 @@
+*第五章主要属于过程信息，运用内在化，比喻法和图表法，掌握常用语句
+
+-我以前看过或听过这个知识吗？
+ 有
+
+-我理解知识的含义吗？（至少是字面上的意思。）
+ 这章主要介绍了ORDER BY字句，字句又是关键字和标识符组成的
+ OREDER BY可以用来给特定字段排序，如果有两个字段需要用,号分隔
+ 排序的顺序是先zwmoney再zwcreatetime
+ 后一个排序是在前一个排序基础上进行的
+ SELECT * FROM gjp_zhangwu ORDER BY zwmoney,zwcreatetime;
+ DESC是降序，ASC是升序，ORDER BY默认为升序
+ 无论怎么排序，实际上规则是由MYSQL设置规定的
+ SELECT * FROM gjp_zhangwu ORDER BY zwmoney DESC,
+ zwcreatetime LIMIT 5;
+ 
+-我知道知识从何而来，与哪些知识有关系吗？
+ 这里主要介绍了数据库的排序问题
+ 可以和java中的Arrays中的sort方法联想
+ 
+-我删除了那些不恰当的联系吗？我删除了那些错误结论吗？
+
+-我将知识用到实际生活中了吗？

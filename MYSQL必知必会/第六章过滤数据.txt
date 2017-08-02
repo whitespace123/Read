@@ -1,0 +1,29 @@
+*第六章主要属于过程信息，运用内在化，比喻法和图表法，掌握常用语句
+
+-我以前看过或听过这个知识吗？
+ 有
+
+-我理解知识的含义吗？（至少是字面上的意思。）
+ 这章介绍了过滤字句where，字句由关键字和标识符组成
+ where属于sql过滤，应用过滤指的是java等高级语言通过if语句等显示
+ sql过滤可以避免造成对数据库繁重的任务
+ --通过过滤条件!=降序显示前5条记录
+ SELECT * FROM gjp_zhangwu WHERE ZWNAME <> '股票收入' 
+ ORDER BY ZWMONEY DESC LIMIT 0,5;
+ --通过过滤条件between降序显示前5条记录
+ SELECT * FROM gjp_zhangwu WHERE ZWCREATETIME BETWEEN '2016-06-15' AND '2017-01-01' ORDER BY ZWMONEY DESC LIMIT 5;
+ --通过过滤条件is NOT NULL 降序显示前5条记录
+ SELECT * FROM gjp_zhangwu WHERE ZWID IS NOT NULL ORDER BY ZWMONEY DESC LIMIT 5;
+ 当非数值类型进行比较时，需要将其变成字符串比较，字符串用
+ 单引号围起来，between and 使用时要按照低值和高值顺序
+ 对于筛选不是null的值时可以过滤null，但是要匹配null的值时候
+ 因为未知也属于null，但是因为未知具有特殊含义 ，所以不能匹配
+ 
+-我知道知识从何而来，与哪些知识有关系吗？
+ 这里主要介绍了where和between and的子句使用
+ 在数据库中<>和!=的含义是相同的
+ null在数据库中的含义和js中有些相似，和java不同
+ 
+-我删除了那些不恰当的联系吗？我删除了那些错误结论吗？
+
+-我将知识用到实际生活中了吗？
