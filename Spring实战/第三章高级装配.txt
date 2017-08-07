@@ -1,0 +1,36 @@
+*第二章主要属于过程信息，需要的是多操作和内在化，比喻法，模型纠错和图表法 练习
+
+-我以前看过或听过这个知识吗？
+ 无
+
+-我理解知识的含义吗？（至少是字面上的意思。）
+	这章内容都包含了三种方式配置：1自动装配 2java配置 3xml配置
+	Profile是针对每个帐户的数据存储，比如一个电子商务网站
+ 的用户购物车数据。需要将项目分给测试组和开发组，每个组的
+ 环境差异这时候profile可以轻松面对何时创建对应得bean
+ 在这里Spring Profile就是一个容器用来储存各种环境下的项目
+ 使用spring profile有两个环节：1配置profile @Profile("xxx")
+ 2激活profile @ActiveProfile("xxx")  xxx要一致性
+	条件化bean实际上，给bean在一定条件下才会创建对象，条件化
+ bean有两个环节：1配置条件@Conditional(xxx.class) 2实现接口
+ xxx.class中implements Condition 实现matches方法，返回值决定
+ 是否创建bean
+	处理bean的歧义性，当多个bean实现同一接口时，Spring需要给bean
+ 增加权值，让接口指向最高权值的bean。处理bean的歧义需要两个环节：
+ 1给bean首选 @Primary 2给bean限定符 @Qualifier("xxx") xxx为类名
+ 驼峰。
+	bean的作用域，1单例 2原型 3会话 4请求 使用@Scope修饰
+	注入外部值，1引入外部文件 @PropertySource("classpath:/xxx")
+	1.2属性占位符 ${...} 1.3SqEL表达式#{...}
+ 
+ 
+-我知道知识从何而来，与哪些知识有关系吗？
+	profile其实就像每个用户(环境)一样，有着自己的“购物车”(项目)
+	environment又叫环境，profile和引入外部文件都称为环境变量
+	bean作用域中的会话bean，实际上有一个与其内容相似代理类注入
+不在会话阶段，会将代理的bean注入给会话bean再注入给需要的类，当
+会话阶段时，代理bean直接将会话bean注入需要类
+
+-我删除了那些不恰当的联系吗？我删除了那些错误结论吗？
+
+-我将知识用到实际生活中了吗？
