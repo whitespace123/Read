@@ -1,0 +1,38 @@
+*第十九章主要属于过程信息，运用内在化，比喻法和图表法，掌握常用语句
+
+-我以前看过或听过这个知识吗？
+ 有
+
+-我理解知识的含义吗？（至少是字面上的意思。）
+	这章的内容比价简单，就是插入数据 insert into
+ 1比如插入这样一段数据
+	INSERT LOW_PRIORITY INTO customers
+	(cust_name,cust_address,cust_city,
+	cust_state,cust_zip,cust_country)
+	VALUES
+	('Pep E.LaPew','100 Main Street','Los Angeles','CA','90046','USA'),
+	('M. Martian','42 Galaxy Way','New York','NY','11213','USA');
+ LOW_PRIORITY的作用是降低insert into的优先性。因为insert into的优先级
+ 高会使字段与表匹配时候会进行插入，导致性能降低
+ 2插入多行数据(拷贝一个表的记录到另一个表中)
+	INSERT LOW_PRIORITY INTO customers
+	(cust_name,cust_address,cust_city,
+	cust_state,cust_zip,cust_country)
+	SELECT cust_name,cust_address,cust_city,
+	cust_state,cust_zip,cust_country
+	FROM custnew
+	WHERE cust_id = 100;
+ 字段名不一定要一一对应，但是数据格式要一一对应	
+	 
+-我知道知识从何而来，与哪些知识有关系吗？
+	1使用插入指令的时候，需要注意其字段可写可不写，但是推荐写上，防止
+ 字段改动造成数据的填写错误
+	2其字段顺序可以和表中字段顺序不一致
+	3如果在多行插入的select后省略了主键字段的话，mysql会自动添加主键，
+ 如果不省略则是导入表的主键
+	4虽然插入多行数据不要求字段名一一对应，但是要将所登记的列的值的对
+ 应到对应的列上
+ 
+-我删除了那些不恰当的联系吗？我删除了那些错误结论吗？
+
+-我将知识用到实际生活中了吗？

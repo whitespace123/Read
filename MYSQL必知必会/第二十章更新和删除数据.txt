@@ -1,0 +1,27 @@
+*第二十章主要属于过程信息，运用内在化，比喻法和图表法，掌握常用语句
+
+-我以前看过或听过这个知识吗？
+ 有
+
+-我理解知识的含义吗？（至少是字面上的意思。）
+	更新表中的数据
+	UPDATE customers 
+	SET cust_name='The Fudds',cust_email = 'elmer@fudd.com' 
+	WHERE cust_id = 10005;
+	更新语句可以和子查询配合使用
+	UPDATE customers
+	SET cust_name = (SELECT cust_name FROM custnew WHERE cust_id =104)
+	WHERE cust_id = 10005;
+	删除表中的记录
+	DELETE FROM gjp_zhangwu WHERE zwname = '空记录';
+	
+-我知道知识从何而来，与哪些知识有关系吗？
+	1无论是update还是delete都必须加上where子句，防止影响表中的其他记录
+	2delete是删除记录，而update将某一列设置为null可以看成是删除列
+	3truncate table 表名 是摧毁表并创建相同的表
+	4保证每个表都有主键
+	5delete和update事先事物处理应该可以回滚，truncate则不行
+ 
+-我删除了那些不恰当的联系吗？我删除了那些错误结论吗？
+
+-我将知识用到实际生活中了吗？
