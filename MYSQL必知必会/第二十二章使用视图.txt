@@ -1,0 +1,35 @@
+*第二十二章主要属于过程信息，运用内在化，比喻法和图表法，掌握常用语句
+
+-我以前看过或听过这个知识吗？
+ 有
+
+-我理解知识的含义吗？（至少是字面上的意思。）
+	视图其实就是对select语句的封装，实际上视图中的记录是不存在的，其实
+ 是对实际表的动态select(抽象化思维的体现)
+	使用计算字段创建视图
+ CREATE VIEW vendorlocations AS 
+ SELECT CONCAT(vend_name,'[',vend_country,']')
+ AS '名称[国家]'
+ FROM vendors
+ ORDER BY vend_name;
+	删除视图
+ DROP VIEW vendorlocations;
+	创建视图筛选掉null的记录
+ CREATE VIEW customeremaillist AS
+ SELECT cust_id,cust_name,cust_email
+ FROM customers
+ WHERE cust_email IS NOT NULL;
+	显示视图中的所有记录
+ SELECT * FROM customeremaillist;	
+ 
+-我知道知识从何而来，与哪些知识有关系吗？
+	1不要对视图进行update、insert、delete操作，因为视图本身不含数据，
+ 对视图的操作实际上是对源表的操作
+	2在筛选视图数据的时候，实际上在执行一条select语句，多余的where则
+ 被组合起来。同理检索视图的order by权值会大于组成视图的order by
+	3视图不能和表或者视图重名
+	4视图对性能是有影响的
+ 
+-我删除了那些不恰当的联系吗？我删除了那些错误结论吗？
+
+-我将知识用到实际生活中了吗？

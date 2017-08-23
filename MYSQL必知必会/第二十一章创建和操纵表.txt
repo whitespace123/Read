@@ -1,0 +1,55 @@
+*第二十一章主要属于过程信息，运用内在化，比喻法和图表法，掌握常用语句
+
+-我以前看过或听过这个知识吗？
+ 有
+
+-我理解知识的含义吗？（至少是字面上的意思。）
+	语句格式化可以使指令的可读性变高
+	使用create table 表名创建表
+ CREATE TABLE IF NOT EXISTS customers
+ (
+ cust_id INT AUTO_INCREMENT,
+ cust_name CHAR(50) NOT NULL,
+ cust_address CHAR(50),
+ cust_city CHAR(50),
+ cust_state CHAR(50),
+ cust_zip CHAR(50),
+ cust_country CHAR(50),
+ cust_contact CHAR(50),
+ cust_email CHAR(255) NULL,
+ PRIMARY KEY (cust_id)
+ )ENGINE = INNODB;
+	删除表
+ DROP TABLE customers;
+	使用alter table更新表的结构，主外键联结
+ ALTER TABLE customers 
+ ADD id INT，
+ ADD CONSTRAINT fk_customers_users FOREIGN KEY(id)REFERENCES
+ users(id);
+	更新表添加列
+ ALTER TABLE customers ADD id INT;
+	更新表删除列
+ ALTER TABLE customers DROP COLUMN id;
+	更改表名称
+ RENAME TABLE customers2 TO customers;
+	更改表的字段名
+ ALTER TABLE jdbcstudy.customers CHANGE zip cust_zip CHAR(50);
+ 
+-我知道知识从何而来，与哪些知识有关系吗？
+	1IF NOT EXISTS可以在有同名表的时候不会报错，但依然不会创建表
+	2指定了字段为not null的话，该字段将不会默认为null
+	3设置为主键的列自动生成not null
+	4每个表仅允许一个auto_increment且必为主外键，一个表允许有多个主键
+ 如：PRIMARY KEY (cust_id,cust_name)
+	5如果两个表关联，添加记录的话需要主外键一致那么在这里可以用select
+ -last_insert_id()来获取主键的最后的值
+	6尽量使用default和not null来修饰字段
+	7MyISAM这个引擎就支持全文本搜索，而InnoDB则不支持全文本搜索
+	8但是InnoDB是支持事物管理的，而MyISAM是不支持事物管理
+	9不同引擎的表不能主外键联结
+	10使用alter主外键关联，必须两表的主外键的字段存在
+	11更改表结构的时候，最好创建一个副本，在副本上操作数据
+	
+-我删除了那些不恰当的联系吗？我删除了那些错误结论吗？
+
+-我将知识用到实际生活中了吗？
