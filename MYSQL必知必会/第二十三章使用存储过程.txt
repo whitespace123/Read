@@ -1,0 +1,72 @@
+*第二十三章主要属于过程信息，运用内在化，比喻法和图表法，掌握常用语句
+
+-我以前看过或听过这个知识吗？
+ 有
+
+-我理解知识的含义吗？（至少是字面上的意思。）
+	存储过程简单来说就是类似于批处理，其性能比使用单独的sql语句要快
+	#创建带参数和返回值的存储过程
+ DELIMITER //
+ CREATE PROCEDURE ordertotal(
+ IN onumber INT,
+ OUT ototal DECIMAL(8,2)
+ )
+ BEGIN
+ SELECT SUM(item_price*quantity)
+ FROM orderitems
+ WHERE order_num = onumber
+ INTO ototal;
+ END//
+ DELIMITER ;
+ 
+	#调用存储过程传入常量和变量，变量接收返回值
+ CALL ordertotal(20005,@total);
+	#调用变量显示记录
+ SELECT @total;
+	#多条记录显示
+ SELECT @pricelow AS '最小值',@pricehigh AS '最大值',@priceaverage AS
+ '平均值';
+ 
+ DELIMITER //
+	#创建智能存储过程
+ CREATE PROCEDURE ordertotal(
+ #创建两个形参onumber、taxable，一个返回值ototal
+ IN onumber INT,
+ IN taxable BOOLEAN,
+ OUT ototal DECIMAL(8,2)
+ )COMMENT 'Obtain order total,optionally adding tax'
+ BEGIN
+ #创建两个局部变量
+ DECLARE total DECIMAL(8,2);
+ DECLARE taxrate INT DEFAULT 6;
+ #将select的值存入到局部变量中
+ SELECT SUM(item_price*quantity)
+ FROM orderitems
+ WHERE order_num = onumber
+ INTO total;
+ #如果taxable为真，则将计算后的值存入到局部变量中
+ IF taxable THEN
+ SELECT total+(total/100*taxrate) INTO total;
+ #最后将局部变量的值存入到返回值中
+ END IF;
+ SELECT total INTO ototal;
+ END//
+ DELIMITER ;
+ 
+ 
+-我知道知识从何而来，与哪些知识有关系吗？
+	1DELIMITER可以改变sql语句的分隔符
+	2存储过程实际上也是一种函数，需要有参数，视图则是动态select没有参数一说
+	3视图和存储过程都是抽象化的体现，视图一定返回结果集，存储过程则不一定
+	4DECIMAL(8,2)8代表了包括小数在内的位数，2代表小数位数，即整数6位小数2位
+	5存储过程的返回值保存其字段类型，每个变量对应一个返回值
+	6调用时in需要常量来当参数，out则需要变量，into是变量间的连接，in是传
+入值，out是返回值
+	7调用存储过程需要用call，调用变量和视图则使用select
+	8再次使用储存过程时和高级语言中的函数一样，需要再次调用
+	9DECLARE可以在存储过程内部定义变量
+	10IF是条件END IF是结束条件
+	
+-我删除了那些不恰当的联系吗？我删除了那些错误结论吗？
+
+-我将知识用到实际生活中了吗？

@@ -1,0 +1,59 @@
+*第二十四章主要属于过程信息，运用内在化，比喻法和图表法，掌握常用语句
+
+-我以前看过或听过这个知识吗？
+ 有
+
+-我理解知识的含义吗？（至少是字面上的意思。）
+	游标就像是指针一样，指着结果集所在的行	
+	#切换sql语句分隔符
+ DELIMITER //
+ #创建无参无返回值存储过程
+ CREATE PROCEDURE processorders()
+ BEGIN
+ #定义变量done，并声明变量o和t
+ DECLARE done BOOLEAN DEFAULT 0;
+ DECLARE o INT;
+ DECLARE t DECIMAL(8,2);
+ #定义游标
+ DECLARE ordernumbers CURSOR
+ FOR
+ SELECT order_num FROM orders;
+ #声明控制条件
+ DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;
+ #创建表格
+ CREATE TABLE IF NOT EXISTS ordertotals(
+ order_num INT ,
+ total DECIMAL(8,2)
+ );
+ #打开游标
+ OPEN ordernumbers;
+ #循环
+ REPEAT
+ #游标向后移动
+ FETCH ordernumbers INTO o;
+ #调用ordertotal存储过程，并传入参数o和1，并用t接收返回值
+ CALL ordertotal(o,1,t);
+ #循环向ordertotals表格插入数据
+ INSERT INTO ordertotals(order_num,total)VALUES(o,t);
+ #结束循环
+ UNTIL done END REPEAT;
+ #关闭游标
+ CLOSE ordernumbers;
+ END//
+ DELIMITER ;
+ 
+-我知道知识从何而来，与哪些知识有关系吗？
+	1MySql的select操作返回的一组称结果集的行
+	2DECLARE ordernumbers CURSOR FOR SELECT order_num FROM orders;是定义游
+ 标的意思DECLARE CURSOR FOR
+	3FETCH可以让游标移动
+	4DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;是控制条件
+ 是执行循环体的部分，必须放在定义游标之后，打开游标之前
+	5DECLARE变量要在定义游标之前声明
+	6REPEAT是让语句循环 UNTIL done END REPEAT;是结束循环
+	7BEGIN END代表了存储过程的内容范围
+	8可以在存储过程中调用其他的存储过程
+
+-我删除了那些不恰当的联系吗？我删除了那些错误结论吗？
+
+-我将知识用到实际生活中了吗？
