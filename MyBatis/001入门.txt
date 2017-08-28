@@ -1,0 +1,99 @@
+	配置文件
+ 是什么：是Mybatis的配置信息
+ 怎么得到：可以用xml或者java的方式来配置
+ 作用域和生命周期：存在于运行期间
+ 示例(xml)：
+ <?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+ <configuration>
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+      </dataSource>
+    </environment>
+  </environments>
+  <mappers>
+    <mapper resource="org/mybatis/example/BlogMapper.xml"/>
+  </mappers>
+ </configuration>
+ 示例(java)：
+ DataSource dataSource = BlogDataSourceFactory.getBlogDataSource();
+ TransactionFactory transactionFactory = new JdbcTransactionFactory();
+ Environment environment = new Environment("development", transactionFactory, dataSource);
+ Configuration configuration = new Configuration(environment);
+ configuration.addMapper(BlogMapper.class);
+ SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+	
+	
+	SqlSessionFactory
+ 是什么：是SqlSession的工厂类，用来创建SqlSession
+ 怎么得到：SqlSessionFactoryBuilder实例通过配置文件来构建SqlSessionFactory
+ 作用域和生命周期：(静态)单例模式，运行期间一直存在，唯一
+ 示例：
+ //使用Resources工具类加载配置文件
+ String resource = "org/mybatis/example/mybatis-config.xml";
+ InputStream inputStream = Resources.getResourceAsStream(resource);
+ //创建SqlSessionFactory实例
+ SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+ 
+ 
+	SqlSessionFactoryBuilder
+ 是什么：用来创建SqlSessionFactory实例
+ 怎么得到：直接new
+ 作用域和声明周期：方法作用域(局部变量)，使用完后即可抛弃，节省资源
+ 
+ 
+	SqlSession
+ 是什么：SqlSession包含了执行sql命令的所有方法以及得到映射器实例
+ 怎么得到：执行SqlSessionFactory实例的方法创建SqlSession
+ 作用域和生命周期：请求或方法作用域，线程不安全需要关闭
+ 示例：
+ //获取SqlSession的实例
+ SqlSession session = sqlSessionFactory.openSession();
+ try {
+  // do work
+ } finally {
+ //最终销毁SqlSession实例
+  session.close();
+ }
+	
+	
+	映射器实例
+ 是什么：是映射接口和映射配置的实现类，包含了映射接口中的方法(映射接口即pojo的包装类DAO)
+ 怎么得到：执行SqlSession的方法可以创建映射器实例
+ 作用域和生命周期：由于是SqlSession创建的，所以也是请求或方法作用域
+ 示例：
+ //获取SqlSession的实例
+ SqlSession session = sqlSessionFactory.openSession();
+ try {
+ //创建映射器实例
+  BlogMapper mapper = session.getMapper(BlogMapper.class);
+ //通过映射器实例执行映射接口中的方法
+  Blog blog = mapper.selectBlog(101);
+ } finally {
+ //最终销毁SqlSession实例
+  session.close();
+ }
+ 
+ 
+	映射配置
+ 是什么：是创建映射实例必要的配置信息，包含了映射接口的具体方法的实现
+ 怎么得到：使用xml的方式来配置
+ 作用域和生命周期：运行期间一直存在
+ 示例：
+ <?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="org.mybatis.example.BlogMapper">
+  <select id="selectBlog" resultType="Blog">
+    select * from Blog where id = #{id}
+  </select>
+ </mapper>
